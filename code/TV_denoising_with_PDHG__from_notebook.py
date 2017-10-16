@@ -45,7 +45,9 @@ print('Pixel size:', X.cell_sides)
 # The rotation converts from 'ij' to 'xy' axes
 image /= image.max()
 x_true = X.element(np.rot90(image, -1))
-y = x_true + 0.1 * odl.phantom.white_noise(X)
+# To get predictable randomness, we explicitly seed the random number generator
+with odl.util.NumpyRandomSeed(123):
+    y = x_true + 0.1 * odl.phantom.white_noise(X)
 
 x_true.show(title='Original image (x_true)', force_show=True)
 y.show(title='Noisy image (y)', force_show=True)
